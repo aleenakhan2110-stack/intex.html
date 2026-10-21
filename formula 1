@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F1 Race Intelligence Dashboard</title>
+<style>
+body{margin:0;background:#10131b;color:#f5f5f5;font-family:Arial,sans-serif}
+header{background:#e5263d;padding:25px;text-align:center}
+header h1{margin:0;font-size:28px}
+main{max-width:1000px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+.card{background:#1d2330;padding:20px;border-radius:12px;margin-bottom:15px}
+h2{color:#ff5265;font-size:19px}
+.number{font-size:28px;font-weight:bold}
+select{padding:10px;border-radius:6px;margin:8px 0;background:#1d2330;color:white}
+.bar{background:#343b49;height:12px;border-radius:10px;margin:8px 0 16px}
+.fill{height:100%;background:#ed3348;border-radius:10px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:12px 6px;border-bottom:1px solid #39404e}
+th{color:#ff7180}
+.note{color:#b8c0ce;font-size:13px}
+footer{text-align:center;padding:20px;color:#aab2c0}
+</style>
+</head>
+<body>
+<header>
+<h1>🏎 Formula 1</h1>
+<p>Race Intelligence Dashboard Analysis Report</p>
+</header>
+<main>
+<div class="card">
+<h2>Dashboard Overview</h2>
+<p>Explore driver performance, championship points and team analysis.</p>
+<label for="driver">Select a driver:</label><br>
+<select id="driver" onchange="update()">
+<option value="all">All Drivers</option>
+<option value="0">Max Verstappen</option>
+<option value="1">Lando Norris</option>
+<option value="2">Charles Leclerc</option>
+<option value="3">Oscar Piastri</option>
+<option value="4">Carlos Sainz</option>
+</select>
+</div>
+
+<div class="grid">
+<div class="card"><h2>Drivers Analysed</h2><div class="number" id="count">5</div></div>
+<div class="card"><h2>Leading Driver</h2><div class="number" id="leader">Verstappen</div></div>
+<div class="card"><h2>Top Team</h2><div class="number">McLaren</div></div>
+</div>
+
+<div class="card">
+<h2>Driver Performance</h2>
+<div id="bars"></div>
+<p class="note">Bars represent illustrative championship points.</p>
+</div>
+
+<div class="card">
+<h2>Driver Leaderboard</h2>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>Driver</th><th>Team</th><th>Points</th><th>Wins</th></tr></thead>
+<tbody id="table"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h2>Race Intelligence Findings</h2>
+<ul>
+<li>Championship points help compare overall driver performance.</li>
+<li>McLaren and Ferrari show strong combined performance in this example.</li>
+<li>Race outcomes also depend on tyre strategy, pit stops and track position.</li>
+<li>Comparing multiple races can help identify consistency and performance trends.</li>
+</ul>
+</div>
+<p class="note">Academic demo project. Statistics shown are illustrative and are not official live Formula 1 data.</p>
+</main>
+<footer>Smart Bridge Project | Formula 1 Race Intelligence</footer>
+
+<script>
+const drivers=[
+{name:"Max Verstappen",team:"Red Bull",points:437,wins:9},
+{name:"Lando Norris",team:"McLaren",points:374,wins:4},
+{name:"Charles Leclerc",team:"Ferrari",points:356,wins:3},
+{name:"Oscar Piastri",team:"McLaren",points:292,wins:2},
+{name:"Carlos Sainz",team:"Ferrari",points:290,wins:2}
+];
+
+function update(){
+ const value=document.getElementById("driver").value;
+ const selected=value==="all"?drivers:[drivers[Number(value)]];
+ document.getElementById("count").textContent=selected.length;
+ document.getElementById("leader").textContent=
+ selected.length===1?selected[0].name.split(" ").slice(-1)[0]:"Verstappen";
+ document.getElementById("table").innerHTML=selected.map(d=>
+ `<tr><td>${d.name}</td><td>${d.team}</td><td>${d.points}</td><td>${d.wins}</td></tr>`
+ ).join("");
+ document.getElementById("bars").innerHTML=selected.map(d=>
+ `<div>${d.name} — ${d.points} points
+ <div class="bar"><div class="fill" style="width:${d.points/437*100}%"></div></div></div>`
+ ).join("");
+}
+update();
+</script>
+</body>
+</html>
